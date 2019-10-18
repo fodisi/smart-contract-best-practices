@@ -14,7 +14,6 @@ Bài viết này được dịch nguyên văn từ https://consensys.github.io/s
  - [**EIPs**](#eip)
  - [**Các tài nguyên tham khảo**](#resource)
 
-[![Join the chat at https://gitter.im/ConsenSys/smart-contract-best-practices](https://badges.gitter.im/ConsenSys/smart-contract-best-practices.svg)](https://gitter.im/ConsenSys/smart-contract-best-practices?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <a name="solidity-tips"></a>
 
