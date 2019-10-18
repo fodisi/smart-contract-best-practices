@@ -1,8 +1,10 @@
 # 以太坊智能合约 —— 最佳安全开发指南
 
+
 **Notice: this translation was generously provided by a contributor. The maintainers are not able to verify the content. Any issues or PRs to help improve it are welcome.**
 
-*本文翻译自：https://github.com/ConsenSys/smart-contract-best-practices。
+*本文翻译自：https://github.com/ConsenSys/smart-contract-best-practices
+
 为了使语句表达更加贴切，个别地方未按照原文逐字逐句翻译，如有出入请以原文为准。*
 
 
@@ -260,7 +262,7 @@ contract Token {
     function deposit() public payable {
         balanceOf[msg.sender] += msg.value;
         totalSupply += msg.value;
-        assert(this.balance >= totalSupply);
+        assert(address(this).balance >= totalSupply);
     }
 }
 ```
@@ -409,7 +411,7 @@ function transfer() external {}
 
 ### 使用Solidity更新的构造器
 
-更合适的构造器/别名，如`selfdestruct`（旧版本为'suicide`）和`keccak256`（旧版本为`sha3`）。 像`require(msg.sender.send(1 ether))``的模式也可以简化为使用`transfer()`，如`msg.sender.transfer(1 ether)`。
+更合适的构造器/别名，如`selfdestruct`（旧版本为`suicide`）和`keccak256`（旧版本为`sha3`）。 像`require(msg.sender.send(1 ether))`的模式也可以简化为使用`transfer()`，如`msg.sender.transfer(1 ether)`。
 
 <a name="known-attacks"></a>
 
