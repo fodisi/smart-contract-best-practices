@@ -1,5 +1,7 @@
 # 以太坊智能合约 —— 最佳安全开发指南
 
+**Notice: this translation was generously provided by a contributor. The maintainers are not able to verify the content. Any issues or PRs to help improve it are welcome.**
+
 *本文翻译自：https://github.com/ConsenSys/smart-contract-best-practices。
 为了使语句表达更加贴切，个别地方未按照原文逐字逐句翻译，如有出入请以原文为准。*
 

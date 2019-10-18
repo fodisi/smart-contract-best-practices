@@ -1,7 +1,7 @@
+# Smart contract best practices
 
+**Notice: this translation was generously provided by a contributor. The maintainers are not able to verify the content. Any issues or PRs to help improve it are welcome.**
 
-  
-# Smart contract best pratices
 
 Bài viết này được dịch nguyên văn từ https://consensys.github.io/smart-contract-best-practices. Để phù hợp với các diễn đạt văn phong tiếng việt, chúng tôi cố gắng diễn đạt tư tưởng của tài liệu chứ không dịch theo từng chữ một.
 
