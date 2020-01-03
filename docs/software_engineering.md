@@ -66,6 +66,8 @@ The alternate approach is to have a contract forward calls and data to the lates
 
 #### Example 2: [Use a `DELEGATECALL`](http://ethereum.stackexchange.com/questions/2404/upgradeable-contracts) to forward data and calls
 
+This approach relies on using the [fallback function](https://solidity.readthedocs.io/en/latest/contracts.html#fallback-function) (in `Relay` contract) to forward the calls to a target contract (`LogicContract`) using [delegatecall](https://solidity.readthedocs.io/en/latest/introduction-to-smart-contracts.html#delegatecall-callcode-and-libraries). Remember that `delegatecall` is a special function in Solidity that executes the logic of the called address (`LogicContract`) in the context of the calling contract (`Relay`), so *"storage, current address and balance still refer to the calling contract , only the code is taken from the called address"*.
+
 ```sol
 pragma solidity ^0.5.0;
 
@@ -110,11 +112,9 @@ contract LogicContract {
 }
 ```
 
-This approach relies on using the [fallback function](https://solidity.readthedocs.io/en/latest/contracts.html#fallback-function) (in `Relay` contract) to forward the calls to a target contract (`LogicContract`) using [delegatecall](https://solidity.readthedocs.io/en/latest/introduction-to-smart-contracts.html#delegatecall-callcode-and-libraries). Note that `delegatecall` is a special function in Solidity that executes the logic of the called address (`LogicContract`) in the context of the calling contract (`ProxyContract`), so *"storage, current address and balance still refer to the calling contract , only the code is taken from the called address"*.
+This simple version of the pattern cannot return values from `LogicContract`'s functions, only forward them, which limits its applicability. More complex implementations attempt to solve this with in-line assembly code and a registry of return sizes. They are commonly referred to as [Proxy Patterns](https://blog.openzeppelin.com/proxy-patterns/), but are also known as [Router](https://github.com/PeterBorah/ether-router), [Dispatcher](https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f) and Relay. Each implementation variant introduces a different set of complexity, risks and limitations.
 
-This simple version of the pattern cannot return values from `LogicContract`'s functions, only forward them, which limits its applicability. More complex implementations attempt to solve this with in-line assembly code and a registry of return sizes. They are commonly referred to as [Proxy Patterns](https://blog.openzeppelin.com/proxy-patterns/), but are also known as [Router](https://github.com/PeterBorah/ether-router), [Dispatcher](https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f) and Relay. Each implementation variant introduces a different complexity, risks and limitations.
-
-You must be extremely careful with how you store data with this method. If your new contract has a different storage layout than the first, your data may end up corrupted. When using more complex implementations of `delegatecall`, you should carefully review, consider and understand (adapted and extended from [Proxy pattern recommendations section](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/):
+You must be extremely careful with how you store data with this method. If your new contract has a different storage layout than the first, your data may end up corrupted. When using more complex implementations of `delegatecall`, you should carefully consider and understand\*:
 
 - How the EVM handles the [layout of state variables in storage](https://solidity.readthedocs.io/en/latest/miscellaneous.html#layout-of-state-variables-in-storage), including packing multiple variables into a single storage slot if possible
 - How and why [the order of inheritance](https://github.com/OpenZeppelin/openzeppelin-sdk/issues/37) impacts the storage layout
@@ -122,8 +122,9 @@ You must be extremely careful with how you store data with this method. If your 
 - Why a new version of the called contract (`LogicContract`) [must have the same storage layout as the previous version](https://github.com/OpenZeppelin/openzeppelin-sdk/issues/37), and only append new variables to the storage
 - [How a contract's constructor can affect upgradability](https://blog.openzeppelin.com/towards-frictionless-upgradeability/)
 - How the ABI specifies [function selectors](https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html?highlight=signature#function-selector) and how [function-name collision](https://medium.com/nomic-labs-blog/malicious-backdoors-in-ethereum-proxies-62629adf3357) can be used to exploit a contract that uses `delegatecall`
-- How `delegatecall` to a non-existent contract will return true even if the called contract does no exist (see Solidity docs on [Error handling]((https://solidity.readthedocs.io/en/latest/control-structures.html#error-handling-assert-require-revert-and-exceptions)) and the section [Breaking the proxy pattern of this post](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/)).
+- How `delegatecall` to a non-existent contract will return true even if the called contract does no exist. For more details see [Breaking the proxy pattern](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/) and Solidity docs on [Error handling](https://solidity.readthedocs.io/en/latest/control-structures.html#error-handling-assert-require-revert-and-exceptions).
 
+\* *Extended from [Proxy pattern recommendations section](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/)*
 
 ### Circuit Breakers (Pause contract functionality)
 
