@@ -120,9 +120,10 @@ You must be extremely careful with how you store data with this method. If your 
 - How and why [the order of inheritance](https://github.com/OpenZeppelin/openzeppelin-sdk/issues/37) impacts the storage layout
 - Why the called contract (`LogicContract`) must have the same storage layout of the calling contract (`Relay`), and only append new variables to the storage (see [Background on delegatecall](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/))
 - Why a new version of the called contract (`LogicContract`) [must have the same storage layout as the previous version](https://github.com/OpenZeppelin/openzeppelin-sdk/issues/37), and only append new variables to the storage
-- [How a contract's constructor can affect upgradability](https://blog.openzeppelin.com/towards-frictionless-upgradeability/)
+- [How a contract's constructor can affect upgradeability](https://blog.openzeppelin.com/towards-frictionless-upgradeability/)
 - How the ABI specifies [function selectors](https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html?highlight=signature#function-selector) and how [function-name collision](https://medium.com/nomic-labs-blog/malicious-backdoors-in-ethereum-proxies-62629adf3357) can be used to exploit a contract that uses `delegatecall`
 - How `delegatecall` to a non-existent contract will return true even if the called contract does no exist. For more details see [Breaking the proxy pattern](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/) and Solidity docs on [Error handling](https://solidity.readthedocs.io/en/latest/control-structures.html#error-handling-assert-require-revert-and-exceptions).
+- Remember the [importance of immutability to achieve truslessness](https://diligence.consensys.net/blog/2019/01/upgradeability-is-a-bug/)
 
 \* *Extended from [Proxy pattern recommendations section](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/)*
 
